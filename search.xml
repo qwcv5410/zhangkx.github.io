@@ -1,8 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title><![CDATA[test1]]></title>
+    <url>%2F2018%2F08%2F28%2Ftest1%2F</url>
+    <content type="text"></content>
+  </entry>
+  <entry>
     <title><![CDATA[test]]></title>
     <url>%2F2018%2F08%2F20%2Ftest%2F</url>
-    <content type="text"><![CDATA[###这是一个测试程序### package com.example.administrator.databases; import android.support.v7.app.AppCompatActivity; import android.os.Bundle; import android.util.Log; import com.example.databases.MyTest; public class MainActivity extends AppCompatActivity { @Override protected void onCreate(Bundle savedInstanceState) { super.onCreate(savedInstanceState); setContentView(R.layout.activity_main); Log.e(&quot;zhangkx&quot;, &quot;.......................&quot;); MyTest test = new MyTest(); test.test2(); MyTest.test(); Log.e(&quot;zhangkx&quot;, &quot;.......................22222&quot;); } }]]></content>
+    <content type="text"><![CDATA[###这是一个测试程序### dfasdfsdfas http://sdfasd package com.example.administrator.databases; import android.support.v7.app.AppCompatActivity; import android.os.Bundle; import android.util.Log; import com.example.databases.MyTest; public class MainActivity extends AppCompatActivity { @Override protected void onCreate(Bundle savedInstanceState) { super.onCreate(savedInstanceState); setContentView(R.layout.activity_main); Log.e(&quot;zhangkx&quot;, &quot;.......................&quot;); MyTest test = new MyTest(); test.test2(); MyTest.test(); Log.e(&quot;zhangkx&quot;, &quot;.......................22222&quot;); } }]]></content>
   </entry>
 </search>

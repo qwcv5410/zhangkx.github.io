@@ -8,7 +8,7 @@
     <atom:link href="/rss2.xml" rel="self" type="application/rss+xml"/>
     
     <description>要么旅行,要么读书,身体和灵魂必须有一个在路上。</description>
-    <pubDate>Tue, 28 Aug 2018 03:10:45 GMT</pubDate>
+    <pubDate>Tue, 28 Aug 2018 03:21:17 GMT</pubDate>
     <generator>http://hexo.io/</generator>
     
     <item>
@@ -18,7 +18,18 @@
       <pubDate>Mon, 20 Aug 2018 01:16:22 GMT</pubDate>
       <description>
       
+        
+        
+          &lt;p&gt;###这是一个测试程序###&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;package com.example.administrator.databases;
+
+import android.support.v7.app.AppCompatActivity;
+import andro
+        
+      
       </description>
+      
+      <content:encoded><![CDATA[<p>###这是一个测试程序###</p><pre><code>package com.example.administrator.databases;import android.support.v7.app.AppCompatActivity;import android.os.Bundle;import android.util.Log;import com.example.databases.MyTest;public class MainActivity extends AppCompatActivity {    @Override    protected void onCreate(Bundle savedInstanceState) {        super.onCreate(savedInstanceState);        setContentView(R.layout.activity_main);        Log.e(&quot;zhangkx&quot;, &quot;.......................&quot;);        MyTest test = new MyTest();        test.test2();        MyTest.test();        Log.e(&quot;zhangkx&quot;, &quot;.......................22222&quot;);    }}</code></pre>]]></content:encoded>
       
       <comments>http://www.20864.com/2018/08/20/test/#disqus_thread</comments>
     </item>

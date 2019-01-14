@@ -1688,7 +1688,7 @@ pre .javascript .function {
   -o-transform: scale(0);
   transform: scale(0);
 }
-#MZAD_POP_PLACEHOLDER {
+#pop_ad {
   margin-top: -250px !important;
   -webkit-transform: scale(0);
   -moz-transform: scale(0);
@@ -1926,7 +1926,7 @@ img:hover {
   width: 4px;
   height: 4px;
   border-radius: 50%;
-  background: #ffd003;
+  background: #ffffbe;
 }
 .links-of-blogroll {
   font-size: 13px;

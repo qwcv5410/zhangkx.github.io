@@ -70,7 +70,9 @@
 
 
 
-<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+  
+
+<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
 
 <link href="/css/main.css?v=6.4.0" rel="stylesheet" type="text/css" />
 
@@ -391,12 +393,24 @@
                 
               
 
-              <time title="创建时间：2019-01-16 13:52:09 / 修改时间：14:52:37" itemprop="dateCreated datePublished" datetime="2019-01-16T13:52:09+08:00">2019-01-16</time>
+              <time title="创建时间：2019-01-16 13:52:09" itemprop="dateCreated datePublished" datetime="2019-01-16T13:52:09+08:00">2019-01-16</time>
             
 
             
               
 
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-01-17 15:40:25" itemprop="dateModified" datetime="2019-01-17T15:40:25+08:00">2019-01-17</time>
               
             
           </span>
@@ -453,18 +467,12 @@
       
         
           
-          博客重新翻新了一番，放了一段时间后，正准备启用，结果发现使用第三方的评论系统搜狐畅言，竟然有广告了。看了一下去广告价格，额，再见。
+          博客重新翻新了一番，放了一段时间后，正准备启用，结果发现使用第三方的评论系统搜狐畅言，竟然有广告了，而且还是很恶心的评论框下方广告和网页右下角广告都有。看了一下去广告价格，惹不起惹不起。
 由于博客挂在Github上，没有独立的服务器，然后其他的第三方评论系统关的关，墙的墙，没什么比较好的可以用。所以畅言用还是要用的，广告也还是要去的。 
-网上搜罗加自己分析了一下，有如下代码可用：  
-/* 畅言评论广告隐藏 */
-#feedAv{ margin-top: -250px!important;transform: scale(0);}
-
-/* 畅言右下角广告隐藏 */
-#pop_ad{ margin-top: -250px!important;transform: scale(0);}
-
+网上搜罗加自己分析了一下，有如下代码可用：12/* 畅言评论广告隐藏 */#feedAv&#123; margin-top: -250px!important;transform: scale(0);&#125;
+12/* 畅言右下角广告隐藏 */#pop_ad&#123; margin-top: -250px!important;transform: scale(0);&#125;
 /* 评论框美化 */  
-.module-cmt-box{padding:10px 16px!important;}
-.header-login{left: 7
+.module-cmt-box{paddin
           ...
           <!--noindex-->
           <div class="post-button text-center">
@@ -1243,22 +1251,22 @@ public class MainActivity extends AppCompatActivity {
 
   
   
-    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+    <script type="text/javascript" src="//cdn.jsdelivr.net/jquery/2.1.3/jquery.min.js"></script>
   
 
   
   
-    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+    <script type="text/javascript" src="//cdn.jsdelivr.net/velocity/1.2.3/velocity.min.js"></script>
   
 
   
   
-    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+    <script type="text/javascript" src="//cdn.jsdelivr.net/velocity/1.2.3/velocity.ui.min.js"></script>
   
 
   
   
-    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+    <script type="text/javascript" src="//cdn.bootcss.com/canvas-nest.js/1.0.1/canvas-nest.min.js"></script>
   
 
 

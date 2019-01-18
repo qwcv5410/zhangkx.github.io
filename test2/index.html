@@ -102,7 +102,7 @@
     root: '/',
     scheme: 'Mist',
     version: '6.4.0',
-    sidebar: {"position":"right","display":"hide","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    sidebar: {"position":"right","display":"hide","offset":12,"b2t":false,"scrollpercent":false,"onmobile":true},
     fancybox: false,
     fastclick: false,
     lazyload: false,
@@ -125,6 +125,7 @@
 
 
   <meta name="description" content="要么旅行,要么读书,身体和灵魂必须有一个在路上。">
+<meta name="keywords" content="Android, Java,">
 <meta property="og:type" content="website">
 <meta property="og:title" content="test2">
 <meta property="og:url" content="http://www.20864.com/test2/index.html">
@@ -415,6 +416,8 @@
 
   <aside id="sidebar" class="sidebar">
     
+      <div id="sidebar-dimmer"></div>
+    
     <div class="sidebar-inner">
 
       
@@ -465,6 +468,12 @@
 
           
           
+            <div class="cc-license motion-element" itemprop="license">
+              <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" target="_blank">
+                <img src="/images/cc-by-nc-sa.svg" alt="Creative Commons" />
+              </a>
+            </div>
+          
 
           
           
@@ -511,16 +520,10 @@
   </span>
 </div>
 
-
-  <span class="post-meta-divider">|</span>
-
-
-
-  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动 v3.7.1</div>
+<span class="post-meta-divider">|</span>
 
 
 
-  <span class="post-meta-divider">|</span>
 
 
 
@@ -581,8 +584,6 @@
 
 
 
-  
-
 
 
 
@@ -608,11 +609,6 @@
   
   
     <script type="text/javascript" src="//cdn.jsdelivr.net/velocity/1.2.3/velocity.ui.min.js"></script>
-  
-
-  
-  
-    <script type="text/javascript" src="//cdn.bootcss.com/canvas-nest.js/1.0.1/canvas-nest.min.js"></script>
   
 
 

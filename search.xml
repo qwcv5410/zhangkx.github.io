@@ -2,22 +2,28 @@
 <search>
   <entry>
     <title><![CDATA[畅言去广告代码]]></title>
-    <url>%2F2019%2F01%2F16%2F%E7%95%85%E8%A8%80%E5%8E%BB%E5%B9%BF%E5%91%8A%E4%BB%A3%E7%A0%81%2F</url>
-    <content type="text"><![CDATA[博客重新翻新了一番，放了一段时间后，正准备启用，结果发现使用第三方的评论系统搜狐畅言，竟然有广告了，而且还是很恶心的评论框下方广告和网页右下角广告都有。看了一下去广告价格，惹不起惹不起。 由于博客挂在Github上，没有独立的服务器，然后其他的第三方评论系统关的关，墙的墙，没什么比较好的可以用。所以畅言用还是要用的，广告也还是要去的。 网上搜罗加自己分析了一下，有如下代码可用：12/* 畅言评论广告隐藏 */#feedAv&#123; margin-top: -250px!important;transform: scale(0);&#125; 12/* 畅言右下角广告隐藏 */#pop_ad&#123; margin-top: -250px!important;transform: scale(0);&#125; /* 评论框美化 */ .module-cmt-box{padding:10px 16px!important;} .header-login{left: 746px!important;border: 0!important;border-radius: 0!important;} .post-wrap-border-t-r,.post-wrap-border-t-l,.post-wrap-border-r,.post-wrap-border-l{display:none;} .post-wrap-main{border:0!important;} .post-wrap-w{background:#f0f0f0;border-radius:5px;box-shadow: 0 2px 6px rgba(0,0,0,.2)} .btn-fw{background:#5fb878 url(https://static.krnet.cc/skin/images/release.svg)center no-repeat !important;width:60px !important; height:60px !important;border-radius:70px;important;margin-top:-5px!important;margin-right:40px!important;background-size:30px !important;box-shadow: 0 2px 6px rgba(0,0,0,.2);-webkit-transition:.3s;transition:.3s} .btn-fw:hover{box-shadow: 0 6px 10px rgba(0,0,0,.2);} .block-head-w{margin-top:-20px !important;} .section-service-w{height: 0px;opacity: 0;} .head-img-w{margin:0px 0 0 0 !important;} .head-img-w img{width:50px !important;height:50px !important;} .head-img-w{top:115px!important;left:-0px!important;} .wrap-action-gw{border-bottom:1px solid #dee4e9 !important;padding-top:30px!important;} .wrap-action-gw span,.wrap-action-gw i,.type-lists,.cmt-list-number,.title-name-gw-tag,.wrap-name-w{display:none!important;} .cmt-list-type{margin:0!important;} .build-floor-gw{background:#f0f0f0 !important} .block-cont-gw{padding:20px 0 !important;border:0 !important;} .section-list-w{width:95%!important;margin-left:2%!important;} 使用方法：在theme/source/css/_common/components/post/post.styl中追加如上代码即可。前面两个根据div的id，把广告显示隐藏掉。最后一段是把评论框美化一下。美化后的效果： 如果不想改变样式，只想去广告，就用上面两句就行了。以上美化部分的代码摘自夜雨聆风。]]></content>
+    <url>%2Fchangyan_quguanggao.html</url>
+    <content type="text"><![CDATA[博客重新翻新了一番，放了一段时间后，正准备启用，结果发现使用第三方的评论系统搜狐畅言，竟然有广告了，而且还是很恶心的评论框下方广告和网页右下角广告都有。看了一下去广告价格，惹不起惹不起。 由于博客挂在Github上，没有独立的服务器，然后其他的第三方评论系统关的关，墙的墙，没什么比较好的可以用。所以畅言用还是要用的，广告也还是要去的。 网上搜罗加自己分析了一下，有如下代码可用： 这是一个路径12/* 畅言评论广告隐藏 */#feedAv&#123; margin-top: -250px!important;transform: scale(0);&#125; 12/* 畅言右下角广告隐藏 */#pop_ad&#123; margin-top: -250px!important;transform: scale(0);&#125; /* 评论框美化 */ .module-cmt-box{padding:10px 16px!important;} .header-login{left: 746px!important;border: 0!important;border-radius: 0!important;} .post-wrap-border-t-r,.post-wrap-border-t-l,.post-wrap-border-r,.post-wrap-border-l{display:none;} .post-wrap-main{border:0!important;} .post-wrap-w{background:#f0f0f0;border-radius:5px;box-shadow: 0 2px 6px rgba(0,0,0,.2)} .btn-fw{background:#5fb878 url(https://static.krnet.cc/skin/images/release.svg)center no-repeat !important;width:60px !important; height:60px !important;border-radius:70px;important;margin-top:-5px!important;margin-right:40px!important;background-size:30px !important;box-shadow: 0 2px 6px rgba(0,0,0,.2);-webkit-transition:.3s;transition:.3s} .btn-fw:hover{box-shadow: 0 6px 10px rgba(0,0,0,.2);} .block-head-w{margin-top:-20px !important;} .section-service-w{height: 0px;opacity: 0;} .head-img-w{margin:0px 0 0 0 !important;} .head-img-w img{width:50px !important;height:50px !important;} .head-img-w{top:115px!important;left:-0px!important;} .wrap-action-gw{border-bottom:1px solid #dee4e9 !important;padding-top:30px!important;} .wrap-action-gw span,.wrap-action-gw i,.type-lists,.cmt-list-number,.title-name-gw-tag,.wrap-name-w{display:none!important;} .cmt-list-type{margin:0!important;} .build-floor-gw{background:#f0f0f0 !important} .block-cont-gw{padding:20px 0 !important;border:0 !important;} .section-list-w{width:95%!important;margin-left:2%!important;} 使用方法：在theme/source/css/_common/components/post/post.styl中追加如上代码即可。前面两个根据div的id，把广告显示隐藏掉。最后一段是把评论框美化一下。美化后的效果： 如果不想改变样式，只想去广告，就用上面两句就行了。以上美化部分的代码摘自夜雨聆风。]]></content>
+      <categories>
+        <category>Android, Java</category>
+      </categories>
+      <tags>
+        <tag>hexo, next</tag>
+      </tags>
   </entry>
   <entry>
     <title><![CDATA[222]]></title>
-    <url>%2F2019%2F01%2F15%2F222%2F</url>
+    <url>%2F222.html</url>
     <content type="text"><![CDATA[前言第1行第2行第3行第4行第5行第6行 12345import com.android.testpublic class MyTest &#123; public static final String TAG = "";&#125;]]></content>
   </entry>
   <entry>
     <title><![CDATA[test1]]></title>
-    <url>%2F2018%2F08%2F28%2Ftest1%2F</url>
+    <url>%2Ftest1.html</url>
     <content type="text"></content>
   </entry>
   <entry>
     <title><![CDATA[test]]></title>
-    <url>%2F2018%2F08%2F20%2Ftest%2F</url>
+    <url>%2Ftest.html</url>
     <content type="text"><![CDATA[###这是一个测试程序### dfasdfsdfas http://sdfasd package com.example.administrator.databases; import android.support.v7.app.AppCompatActivity; import android.os.Bundle; import android.util.Log; import com.example.databases.MyTest; public class MainActivity extends AppCompatActivity { @Override protected void onCreate(Bundle savedInstanceState) { super.onCreate(savedInstanceState); setContentView(R.layout.activity_main); Log.e(&quot;zhangkx&quot;, &quot;.......................&quot;); MyTest test = new MyTest(); test.test2(); MyTest.test(); Log.e(&quot;zhangkx&quot;, &quot;.......................22222&quot;); } }]]></content>
   </entry>
 </search>

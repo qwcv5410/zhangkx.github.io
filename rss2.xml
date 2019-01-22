@@ -28,58 +28,5 @@
       <comments>http://www.20864.com/changyanquguanggao.html#disqus_thread</comments>
     </item>
     
-    <item>
-      <title>222</title>
-      <link>http://www.20864.com/222.html</link>
-      <guid>http://www.20864.com/222.html</guid>
-      <pubDate>Tue, 15 Jan 2019 08:39:19 GMT</pubDate>
-      <description>
-      
-        
-        
-          &lt;h2 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h2&gt;&lt;p&gt;第1行&lt;br&gt;第2行&lt;br&gt;第3行&lt;br&gt;第4行&lt;br&gt;第5行&lt;br&gt;第6行&lt;/p&gt;
-&lt;figure class=&quot;highlight ja
-        
-      
-      </description>
-      
-      <content:encoded><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>第1行<br>第2行<br>第3行<br>第4行<br>第5行<br>第6行</p><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> com.android.test</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MyTest</span> </span>&#123;</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> String TAG = <span class="string">""</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content:encoded>
-      
-      <comments>http://www.20864.com/222.html#disqus_thread</comments>
-    </item>
-    
-    <item>
-      <title>test1</title>
-      <link>http://www.20864.com/test1.html</link>
-      <guid>http://www.20864.com/test1.html</guid>
-      <pubDate>Tue, 28 Aug 2018 03:24:11 GMT</pubDate>
-      <description>
-      
-      </description>
-      
-      <comments>http://www.20864.com/test1.html#disqus_thread</comments>
-    </item>
-    
-    <item>
-      <title>test</title>
-      <link>http://www.20864.com/test.html</link>
-      <guid>http://www.20864.com/test.html</guid>
-      <pubDate>Mon, 20 Aug 2018 01:16:22 GMT</pubDate>
-      <description>
-      
-        
-        
-          &lt;p&gt;###这是一个测试程序###&lt;/p&gt;
-&lt;p&gt;&lt;a href=&quot;dfasdfsdfas&quot; title=&quot;dfasdfasdfasdf&quot;&gt;dfasdfsdfas&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;&lt;a href=&quot;http://sdfasd&quot; title=&quot;fdfasdf&quot; target=
-        
-      
-      </description>
-      
-      <content:encoded><![CDATA[<p>###这是一个测试程序###</p><p><a href="dfasdfsdfas" title="dfasdfasdfasdf">dfasdfsdfas</a></p><p><a href="http://sdfasd" title="fdfasdf" target="_blank" rel="noopener">http://sdfasd</a></p><pre><code>package com.example.administrator.databases;import android.support.v7.app.AppCompatActivity;import android.os.Bundle;import android.util.Log;import com.example.databases.MyTest;public class MainActivity extends AppCompatActivity {    @Override    protected void onCreate(Bundle savedInstanceState) {        super.onCreate(savedInstanceState);        setContentView(R.layout.activity_main);        Log.e(&quot;zhangkx&quot;, &quot;.......................&quot;);        MyTest test = new MyTest();        test.test2();        MyTest.test();        Log.e(&quot;zhangkx&quot;, &quot;.......................22222&quot;);    }}</code></pre>]]></content:encoded>
-      
-      <comments>http://www.20864.com/test.html#disqus_thread</comments>
-    </item>
-    
   </channel>
 </rss>

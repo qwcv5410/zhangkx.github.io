@@ -1787,7 +1787,7 @@ important
   width: 95% !important;
   margin-left: 2% !important;
 }
-.module-hot-topic {
+#module-hot-topic {
   margin-top: -250px !important;
   -webkit-transform: scale(0);
   -moz-transform: scale(0);
@@ -2129,7 +2129,7 @@ img:hover {
   width: 4px;
   height: 4px;
   border-radius: 50%;
-  background: #26ffff;
+  background: #ffa22f;
 }
 .links-of-blogroll {
   font-size: 13px;

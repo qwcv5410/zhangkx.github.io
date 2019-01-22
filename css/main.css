@@ -1787,22 +1787,6 @@ important
   width: 95% !important;
   margin-left: 2% !important;
 }
-.module-hot-topic clear-g {
-  margin-top: -250px !important;
-  -webkit-transform: scale(0);
-  -moz-transform: scale(0);
-  -ms-transform: scale(0);
-  -o-transform: scale(0);
-  transform: scale(0);
-}
-#module-hot-topic clear-g {
-  margin-top: -250px !important;
-  -webkit-transform: scale(0);
-  -moz-transform: scale(0);
-  -ms-transform: scale(0);
-  -o-transform: scale(0);
-  transform: scale(0);
-}
 .module-hot-topic {
   margin-top: -250px !important;
   -webkit-transform: scale(0);
@@ -2153,7 +2137,7 @@ img:hover {
   width: 4px;
   height: 4px;
   border-radius: 50%;
-  background: #5708b9;
+  background: #39a68f;
 }
 .links-of-blogroll {
   font-size: 13px;

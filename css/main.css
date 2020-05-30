@@ -1698,12 +1698,10 @@ pre .javascript .function {
   transform: scale(0);
 }
 #pop_ad {
-  margin-top: -250px !important;
-  -webkit-transform: scale(0);
-  -moz-transform: scale(0);
-  -ms-transform: scale(0);
-  -o-transform: scale(0);
-  transform: scale(0);
+  display: none;
+}
+#cyr_pop_ad {
+  display: none;
 }
 .module-cmt-box {
   padding: 10px 16px !important;
@@ -2121,7 +2119,7 @@ img:hover {
   width: 4px;
   height: 4px;
   border-radius: 50%;
-  background: #ab0334;
+  background: #14a854;
 }
 .links-of-blogroll {
   font-size: 13px;

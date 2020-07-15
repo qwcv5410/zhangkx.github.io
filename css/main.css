@@ -2119,7 +2119,7 @@ img:hover {
   width: 4px;
   height: 4px;
   border-radius: 50%;
-  background: #14a854;
+  background: #22fffc;
 }
 .links-of-blogroll {
   font-size: 13px;
@@ -3156,4 +3156,7 @@ blockquote.question {
 }
 .highlight figcaption a {
   color: #5073b8;
+}
+.cyr_pop_ad {
+  display: none;
 }

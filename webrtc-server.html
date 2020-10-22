@@ -1,0 +1,1417 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-CN">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2"/>
+<meta name="theme-color" content="#222">
+<script src="//cdn.bootcss.com/pace/1.0.2/pace.min.js"></script>
+<link href="//cdn.bootcss.com/pace/1.0.2/themes/pink/pace-theme-flash.css" rel="stylesheet">
+<style>
+    .pace .pace-progress {
+        background: #1E92FB; /*进度条颜色*/
+        height: 3px;
+    }
+    .pace .pace-progress-inner {
+         box-shadow: 0 0 10px #1E92FB, 0 0 5px     #1E92FB; /*阴影颜色*/
+    }
+    .pace .pace-activity {
+        border-top-color: #1E92FB;    /*上边框颜色*/
+        border-left-color: #1E92FB;    /*左边框颜色*/
+    }
+</style>
+
+
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=6.4.0" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=6.4.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-1.jpg?v=6.4.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-1.jpg?v=6.4.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=6.4.0" color="#222">
+
+
+
+
+
+
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '6.4.0',
+    sidebar: {"position":"right","display":"hide","offset":12,"b2t":false,"scrollpercent":true,"onmobile":true},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"输入关键字","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="环境操作系统： Ubuntu 16.04 64bits 服务器组成AppRTC 房间+Web服务器 https://github.com/webrtc/apprtcCollider 信令服务器，在AppRTC源码里CoTurn coturn打洞+中继服务器Nginx 服务器，用于Web访问代理和Websocket代理。">
+<meta name="keywords" content="webrtc">
+<meta property="og:type" content="article">
+<meta property="og:title" content="WebRTC 服务器搭建">
+<meta property="og:url" content="http://www.20864.com/webrtc-server.html">
+<meta property="og:site_name" content="20864">
+<meta property="og:description" content="环境操作系统： Ubuntu 16.04 64bits 服务器组成AppRTC 房间+Web服务器 https://github.com/webrtc/apprtcCollider 信令服务器，在AppRTC源码里CoTurn coturn打洞+中继服务器Nginx 服务器，用于Web访问代理和Websocket代理。">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2020-10-22T08:25:25.111Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="WebRTC 服务器搭建">
+<meta name="twitter:description" content="环境操作系统： Ubuntu 16.04 64bits 服务器组成AppRTC 房间+Web服务器 https://github.com/webrtc/apprtcCollider 信令服务器，在AppRTC源码里CoTurn coturn打洞+中继服务器Nginx 服务器，用于Web访问代理和Websocket代理。">
+
+
+
+  <link rel="alternate" href="/rss2.xml" title="20864" type="application/atom+xml" />
+
+
+
+
+  <link rel="canonical" href="http://www.20864.com/webrtc-server.html"/>
+
+
+
+<script type="text/javascript" id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>WebRTC 服务器搭建 | 20864</title>
+  
+
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?42e0bf35f1eba172c02de16260ba79c9";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style type="text/css">
+    .use-motion .motion-element,
+    .use-motion .brand,
+    .use-motion .menu-item,
+    .sidebar-inner,
+    .use-motion .post-block,
+    .use-motion .pagination,
+    .use-motion .comments,
+    .use-motion .post-header,
+    .use-motion .post-body,
+    .use-motion .collection-title { opacity: initial; }
+
+    .use-motion .logo,
+    .use-motion .site-title,
+    .use-motion .site-subtitle {
+      opacity: initial;
+      top: initial;
+    }
+
+    .use-motion {
+      .logo-line-before i { left: initial; }
+      .logo-line-after i { right: initial; }
+    }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">20864</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <p class="site-subtitle">生命在于运动</p>
+      
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+    <a href="/" rel="section">首页</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+    <a href="/tags/" rel="section">标签</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+    <a href="/categories/" rel="section">分类</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+    <a href="/archives/" rel="section">归档</a>
+  </li>
+
+      
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            搜索</a>
+        </li>
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.20864.com/webrtc-server.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="kunxiang.zhang">
+      <meta itemprop="description" content="要么旅行,要么读书,身体和灵魂必须有一个在路上。">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="20864">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">WebRTC 服务器搭建
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2020-06-06 16:16:32" itemprop="dateCreated datePublished" datetime="2020-06-06T16:16:32+08:00">2020-06-06</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2020-10-22 16:25:25" itemprop="dateModified" datetime="2020-10-22T16:25:25+08:00">2020-10-22</time>
+              
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/webrtc/" itemprop="url" rel="index"><span itemprop="name">webrtc</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+              <span class="post-meta-divider">|</span>
+              <span class="post-meta-item-icon">
+                <i class="fa fa-comment-o"></i>
+              </span>
+              
+                <a href="/webrtc-server.html#SOHUCS" itemprop="discussionUrl">
+                  <span class="post-meta-item-text">评论数：</span> <span id="changyan_count_unit" class="post-comments-count hc-comment-count" data-xid="webrtc-server.html" itemprop="commentsCount"></span>
+                </a>
+              
+            
+          
+
+          
+          
+             <span id="/webrtc-server.html" class="leancloud_visitors" data-flag-title="WebRTC 服务器搭建">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数：</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="环境"><a href="#环境" class="headerlink" title="环境"></a>环境</h2><p>操作系统： Ubuntu 16.04 64bits</p>
+<h2 id="服务器组成"><a href="#服务器组成" class="headerlink" title="服务器组成"></a>服务器组成</h2><p>AppRTC 房间+Web服务器 <a href="https://github.com/webrtc/apprtc" target="_blank" rel="noopener">https://github.com/webrtc/apprtc</a><br>Collider 信令服务器，在AppRTC源码里<br>CoTurn coturn打洞+中继服务器<br>Nginx 服务器，用于Web访问代理和Websocket代理。</p>
+<a id="more"></a>
+<p>AppRTC 房间+Web服务器使用python+js语言<br>AppRTC Collider信令服务器采用go语言<br>Coturn 采用C语言</p>
+<p>在部署到公网时需要通过Nginx做Web和Websocket的代理连接<br>实际开发：把信令+房间管理 都是写到一个服务器</p>
+<h2 id="软件安装"><a href="#软件安装" class="headerlink" title="软件安装"></a>软件安装</h2><p>注意，本文中apt-get都是用apt的方式，该命令仅在ubuntu16及以上版本支持，两者无大差别，请根据自己系统版本及使用习惯使用。</p>
+<h4 id="基础软件"><a href="#基础软件" class="headerlink" title="基础软件"></a>基础软件</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 安装vim</span></span><br><span class="line">sudo apt install vim</span><br><span class="line"></span><br><span class="line"><span class="comment"># 安装 git</span></span><br><span class="line">sudo apt install git</span><br><span class="line"></span><br><span class="line"><span class="comment"># 安装JDK</span></span><br><span class="line"><span class="comment"># 添加ppa源，并更新源</span></span><br><span class="line">sudo add-apt-repository ppa:openjdk-r/ppa </span><br><span class="line">sudo apt update</span><br><span class="line"><span class="comment"># 安装openjdk 8 </span></span><br><span class="line">sudo apt install openjdk-8-jdk</span><br><span class="line">java -version</span><br><span class="line"><span class="comment"># openjdk version "1.8.0_265"</span></span><br></pre></td></tr></table></figure>
+<h4 id="创建目录"><a href="#创建目录" class="headerlink" title="创建目录"></a>创建目录</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mkdir ~/webrtc</span><br><span class="line"><span class="built_in">cd</span> ~/webrtc</span><br></pre></td></tr></table></figure>
+<p>我的webrtc目录为/home/zhangkx/webrtc，后续都是采用该目录。</p>
+<h4 id="安装nodejs及相关"><a href="#安装nodejs及相关" class="headerlink" title="安装nodejs及相关"></a>安装nodejs及相关</h4><p>注意：nodejs 安装10以上版本<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> ~/webrtc</span><br><span class="line">wget https://nodejs.org/dist/v10.16.0/node-v10.16.0-linux-x64.tar.xz</span><br><span class="line">tar -xvf node-v10.16.0-linux-x64.tar.xz</span><br><span class="line"><span class="built_in">cd</span> node-v10.16.0-linux-x64/</span><br><span class="line"></span><br><span class="line">ls -al ./bin/</span><br><span class="line"><span class="comment"># bin目录下应该要有npm和node文件，建立软连接</span></span><br><span class="line">sudo ln -s /home/zhangkx/webrtc/node-v10.16.0-linux-x64/bin/npm /usr/<span class="built_in">local</span>/bin/</span><br><span class="line">sudo ln -s /home/zhangkx/webrtc/node-v10.16.0-linux-x64/bin/node /usr/<span class="built_in">local</span>/bin/</span><br><span class="line"><span class="comment"># 查看版本号</span></span><br><span class="line">node -v</span><br><span class="line"><span class="comment"># V10.16.0</span></span><br><span class="line">npm -v</span><br><span class="line"><span class="comment"># 6.9.0</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 进入node-v10.16.0-linux-x64/bin目录下，安装grunt-cli</span></span><br><span class="line"><span class="built_in">cd</span> bin</span><br><span class="line">sudo npm -g install grunt-cli</span><br><span class="line">sudo ln -s /home/zhangkx/webrtc/node-v10.16.0-linux-x64/bin/grunt /usr/<span class="built_in">local</span>/bin/</span><br><span class="line">grunt -version</span><br><span class="line"><span class="comment"># grunt-cli v1.3.2</span></span><br></pre></td></tr></table></figure></p>
+<p>也可以通过apt install nodejs方式安装，可能出现版本及依赖不对的问题，所以本文未采用该方式。</p>
+<h4 id="安装Python和Python-webtest"><a href="#安装Python和Python-webtest" class="headerlink" title="安装Python和Python-webtest"></a>安装Python和Python-webtest</h4><p>ubuntu16自带python2.7<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">python -V</span><br><span class="line"><span class="comment"># Python 2.7.12</span></span><br></pre></td></tr></table></figure></p>
+<p>如果没有则安装<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt install python</span><br></pre></td></tr></table></figure></p>
+<p>安装python-webtest<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt install python-webtest</span><br></pre></td></tr></table></figure></p>
+<h2 id="搭建房间服务器（Room-Server）"><a href="#搭建房间服务器（Room-Server）" class="headerlink" title="搭建房间服务器（Room Server）"></a>搭建房间服务器（Room Server）</h2><h4 id="下载apprtc源码"><a href="#下载apprtc源码" class="headerlink" title="下载apprtc源码"></a>下载apprtc源码</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> ~/webrtc</span><br><span class="line">git <span class="built_in">clone</span> https://github.com/webrtc/apprtc.git   </span><br><span class="line"><span class="built_in">cd</span> apprtc</span><br><span class="line">sudo npm install</span><br></pre></td></tr></table></figure>
+<p>apprtc下package.json文件，定义了需要安装哪些依赖项，在package.json当前目录执行npm install，安装依赖模块在这个目录的node_modules文件夹下，如果执行npm install -g，为全局安装，所有nodejs都可以用。</p>
+<h4 id="修改文件"><a href="#修改文件" class="headerlink" title="修改文件"></a>修改文件</h4><p>配置防火墙，允许访问8090端口（tcp端口，此端口用于web访问）<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 允许外部访问8090端口（tcp/udp），其他端口类似</span></span><br><span class="line">sudo ufw allow 8090</span><br></pre></td></tr></table></figure></p>
+<p>1.配置文件修改（主要是配置apprtc对应的conturn和collider相关参数）<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">sudo vim ~/webrtc/apprtc/src/app_engine/constants.py</span><br><span class="line"></span><br><span class="line"><span class="comment"># Turn/Stun server override. This allows AppRTC to connect to turn servers</span></span><br><span class="line"><span class="comment"># directly rather than retrieving them from an ICE server provider.</span></span><br><span class="line"><span class="comment"># ICE_SERVER_OVERRIDE = None		### 这里注释掉</span></span><br><span class="line"><span class="comment"># Enable by uncomment below and comment out above, then specify turn and stun</span></span><br><span class="line">ICE_SERVER_OVERRIDE = [</span><br><span class="line">  &#123;</span><br><span class="line">    <span class="string">"urls"</span>: [</span><br><span class="line"> 	<span class="string">"turn:192.168.3.110:3478?transport=udp"</span>,</span><br><span class="line"> 	<span class="string">"turn:192.168.3.110:3478?transport=tcp"</span></span><br><span class="line">    ],</span><br><span class="line"> 	<span class="string">"username"</span>: <span class="string">"zhangkx"</span>,</span><br><span class="line"> 	<span class="string">"credential"</span>: <span class="string">"123456"</span></span><br><span class="line">  &#125;,</span><br><span class="line">  &#123;</span><br><span class="line"> 	<span class="string">"urls"</span>: [</span><br><span class="line"> 	<span class="string">"stun:192.168.3.110:3478"</span></span><br><span class="line">    ]</span><br><span class="line">  &#125;</span><br><span class="line">]</span><br><span class="line"></span><br><span class="line">ICE_SERVER_BASE_URL = <span class="string">'https:192.168.3.110'</span></span><br><span class="line">ICE_SERVER_URL_TEMPLATE = <span class="string">'%s/v1alpha/iceconfig?key=%s'</span> <span class="comment"># 如果iceconfig.php未实现，可用默认配置，但是Android Apk会有问题</span></span><br><span class="line">ICE_SERVER_API_KEY = os.environ.get(<span class="string">'ICE_SERVER_API_KEY'</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Dictionary keys in the collider instance info constant.</span></span><br><span class="line">WSS_INSTANCE_HOST_KEY = <span class="string">'192.168.3.110:8088'</span>  <span class="comment"># 信令服务器端口号8088  </span></span><br><span class="line">WSS_INSTANCE_NAME_KEY = <span class="string">'vm_name'</span></span><br><span class="line">WSS_INSTANCE_ZONE_KEY = <span class="string">'zone'</span></span><br><span class="line">WSS_INSTANCES = [&#123;</span><br><span class="line">	WSS_INSTANCE_HOST_KEY: <span class="string">'192.168.3.110:8088'</span>,</span><br><span class="line">    WSS_INSTANCE_NAME_KEY: <span class="string">'wsserver-std'</span>,</span><br><span class="line">    WSS_INSTANCE_ZONE_KEY: <span class="string">'us-central1-a'</span>  </span><br><span class="line">&#125;]</span><br></pre></td></tr></table></figure></p>
+<h4 id="编译"><a href="#编译" class="headerlink" title="编译"></a>编译</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> ~/webrtc/apprtc</span><br><span class="line">sudo npm install</span><br><span class="line">sudo grunt build</span><br></pre></td></tr></table></figure>
+<p>编译完成之后，会生成out目录，房间服务器编译完成。</p>
+<h4 id="安装和配置google-app-engine"><a href="#安装和配置google-app-engine" class="headerlink" title="安装和配置google app engine"></a>安装和配置google app engine</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> ~/webrtc</span><br><span class="line"><span class="comment"># 下载google_appengine</span></span><br><span class="line">wget https://storage.googleapis.com/appengine-sdks/featured/google_appengine_1.9.40.zip</span><br><span class="line">unzip google_appengine_1.9.40.zip</span><br><span class="line"></span><br><span class="line"><span class="comment">#配置环境变量：</span></span><br><span class="line">sudo vim /etc/profile</span><br><span class="line"><span class="comment"># 在最后添加一行</span></span><br><span class="line"><span class="built_in">export</span> PATH=<span class="string">"<span class="variable">$PATH</span>:/home/zhangkx/webrtc/google_appengine"</span></span><br><span class="line"><span class="built_in">source</span> /etc/profile</span><br></pre></td></tr></table></figure>
+<h4 id="运行房间服务器（room-server"><a href="#运行房间服务器（room-server" class="headerlink" title="运行房间服务器（room server)"></a>运行房间服务器（room server)</h4><p>在目录/home/zhangkx/webrtc/google_appengine目录下找到dev_appserver.py脚本<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 默认端口是8080，这里我们指定为8090</span></span><br><span class="line">sudo /home/zhangkx/webrtc/google_appengine/dev_appserver.py --host=0.0.0.0 --port=8090 /home/zhangkx/webrtc/apprtc/out/app_engine --skip_sdk_update_check</span><br><span class="line"></span><br><span class="line"><span class="comment"># 若想后台运行，则执行</span></span><br><span class="line">sudo nohup /home/zhangkx/webrtc/google_appengine/dev_appserver.py --host=0.0.0.0 --port=8090 /home/zhangkx/webrtc/apprtc/out/app_engine --skip_sdk_update_check &amp;</span><br></pre></td></tr></table></figure></p>
+<p>因为是为公网、或者局域网其他人提供服务，所以这里 host=0.0.0.0，以避免只监听 127.0.0.1 的状况</p>
+<h4 id="在浏览器中访问房间服务器"><a href="#在浏览器中访问房间服务器" class="headerlink" title="在浏览器中访问房间服务器"></a>在浏览器中访问房间服务器</h4><p><a href="http://192.168.3.110:8090" target="_blank" rel="noopener">http://192.168.3.110:8090</a><br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 开启控制台新窗口，查看是否成功</span></span><br><span class="line">sudo lsof -i:8090</span><br><span class="line"><span class="comment"># 输出下列内容</span></span><br><span class="line">COMMAND  PID  USER  FD  TYPE  DEVICE  SIZE/OFF  NODE  NAME</span><br><span class="line">python  5248  root  8u  IPv4  83337    0t0      TCP  *:8090  (LISTEN)</span><br></pre></td></tr></table></figure></p>
+<h2 id="搭建信令服务器-Collider-Server"><a href="#搭建信令服务器-Collider-Server" class="headerlink" title="搭建信令服务器(Collider Server)"></a>搭建信令服务器(Collider Server)</h2><h4 id="安装go语言编译器"><a href="#安装go语言编译器" class="headerlink" title="安装go语言编译器"></a>安装go语言编译器</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">apt-get install golang-go</span><br><span class="line"><span class="comment"># 查看版本号 </span></span><br><span class="line">go version</span><br><span class="line"><span class="comment"># go version go1.6.2 linux/amd64</span></span><br></pre></td></tr></table></figure>
+<h4 id="复制collider源代码"><a href="#复制collider源代码" class="headerlink" title="复制collider源代码"></a>复制collider源代码</h4><p>创建go工作目录<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> ~/webrtc</span><br><span class="line">mkdir -p goworkspace/src</span><br><span class="line"><span class="comment">#配置环境变量：</span></span><br><span class="line">sudo vim /etc/profile</span><br><span class="line"><span class="comment"># 在最后添加一行</span></span><br><span class="line"><span class="built_in">export</span> GOPATH=/home/zhangkx/webrtc/goworkspace</span><br><span class="line"><span class="built_in">source</span> /etc/profile</span><br></pre></td></tr></table></figure></p>
+<p>（此源码在房间服务器源码目录下/home/zhangkx/webrtc/apprtc/src/collider/)<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 将collider的源码软连接到go的工作目录下</span></span><br><span class="line">ln -s /home/zhangkx/webrtc/apprtc/src/collider/collider <span class="variable">$GOPATH</span>/src</span><br><span class="line">ln -s /home/zhangkx/webrtc/apprtc/src/collider/collidermain <span class="variable">$GOPATH</span>/src</span><br><span class="line">ln -s /home/zhangkx/webrtc/apprtc/src/collider/collidertest <span class="variable">$GOPATH</span>/src</span><br></pre></td></tr></table></figure></p>
+<h4 id="修改代码"><a href="#修改代码" class="headerlink" title="修改代码"></a>修改代码</h4><p>1.编辑文件/root/goWorkspace/src/collidermain/main.go，修改房间服务器的地址<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">var roomSrv = flag.String(<span class="string">"room-server"</span>, <span class="string">"http://192.168.3.110:8090"</span>, <span class="string">"The origin of the room server"</span>)</span><br></pre></td></tr></table></figure></p>
+<p>如果不改这句，需要在启动信令服务器的命令中添加-room-server=”<a href="http://192.168.3.110:8090&quot;" target="_blank" rel="noopener">http://192.168.3.110:8090&quot;</a></p>
+<p>2.<br>修改SSL证书地址：<br>编辑文件/root/goWorkspace/src/collider/collider.go，修改下面这句：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#/cert/cert.pem与/cert/key.pem改为自己使用的证书地址</span></span><br><span class="line">e = server.ListenAndServeTLS(<span class="string">"/cert/cert.pem"</span>, <span class="string">"/cert/key.pem"</span>)</span><br></pre></td></tr></table></figure></p>
+<p>SSL证书生成见后续Nginx配置。</p>
+<h4 id="编译信令服务器"><a href="#编译信令服务器" class="headerlink" title="编译信令服务器"></a>编译信令服务器</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> <span class="variable">$GOPATH</span>/src</span><br><span class="line"><span class="comment"># 执行go get collidermain， 会被墙。</span></span><br><span class="line"><span class="comment"># 报错: package golang.org/x/net/websocket: unrecognized import path "golang.org/x/net/websocket"</span></span><br><span class="line"><span class="comment"># 改为执行</span></span><br><span class="line">sudo mkdir -p <span class="variable">$GOPATH</span>/src/golang.org/x/</span><br><span class="line"><span class="built_in">cd</span> <span class="variable">$GOPATH</span>/src/golang.org/x/</span><br><span class="line">sudo git <span class="built_in">clone</span> https://github.com/golang/net.git net</span><br><span class="line">sudo go install net</span><br><span class="line"></span><br><span class="line"><span class="comment">#编译collidermain</span></span><br><span class="line"><span class="built_in">cd</span> <span class="variable">$GOPATH</span>/src</span><br><span class="line">go get collidermain</span><br><span class="line">go install collidermain</span><br></pre></td></tr></table></figure>
+<p>编译成功后，在$GOPATH下会生成bin和pkg目录。 </p>
+<h4 id="运行信令服务器"><a href="#运行信令服务器" class="headerlink" title="运行信令服务器"></a>运行信令服务器</h4><p>配置防火墙，允许访问8089端口（tcp，用于客户端和collider建立websocket信令通信）<br>进入/root/goWorkspace/bin/目录，运行信令服务器<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sudo <span class="variable">$GOPATH</span>/bin/collidermain -port=8089 -tls=<span class="literal">true</span></span><br><span class="line"><span class="comment"># 若想后台运行，则执行</span></span><br><span class="line">sudo nohup <span class="variable">$GOPATH</span>/bin/collidermain -port=8089 -tls=<span class="literal">true</span> &amp;</span><br></pre></td></tr></table></figure></p>
+<p>没有修改main.go的话，需要在命令后面加上room-server参数<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo <span class="variable">$GOPATH</span>/bin/collidermain -port=8089 -tls=<span class="literal">true</span> -room-server=<span class="string">"http://192.168.3.110:8090"</span></span><br></pre></td></tr></table></figure></p>
+<p>-room-server=”<a href="http://192.168.3.110:8090&quot;" target="_blank" rel="noopener">http://192.168.3.110:8090&quot;</a> 实际是连接房间服务器的地址<br>tls=true，上面apprtc.py不需要修改；tls=false，需要把apprtc.py中的wss://和https:// 改为ws://和http://</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 开启控制台新窗口，检查是否成功</span></span><br><span class="line">sudo lsof -i:8089</span><br><span class="line"><span class="comment">#显示</span></span><br><span class="line">COMMAND    PID  USER  FD  TYPE  DEVICE  SIZE/OFF  NODE  NAME</span><br><span class="line">colliderm  5610 root  3u  IPv6  92193      0t0    TCP   *:8089 (LISTEN)</span><br></pre></td></tr></table></figure>
+<h2 id="搭建STUN-TURN服务器"><a href="#搭建STUN-TURN服务器" class="headerlink" title="搭建STUN\TURN服务器"></a>搭建STUN\TURN服务器</h2><h4 id="安装coturn"><a href="#安装coturn" class="headerlink" title="安装coturn"></a>安装coturn</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">sudo apt install libssl-dev</span><br><span class="line">sudo apt-get install libevent-dev</span><br><span class="line"></span><br><span class="line"><span class="built_in">cd</span> ~/webrtc</span><br><span class="line">wget http://coturn.net/turnserver/v4.5.0.7/turnserver-4.5.0.7.tar.gz</span><br><span class="line">tar xfz turnserver-4.5.0.7.tar.gz</span><br><span class="line"><span class="built_in">cd</span> turnserver-4.5.0.7</span><br><span class="line"></span><br><span class="line">sudo ./configure</span><br><span class="line">sudo make</span><br><span class="line">sudo make install</span><br></pre></td></tr></table></figure>
+<h4 id="进行相关配置（废弃）"><a href="#进行相关配置（废弃）" class="headerlink" title="进行相关配置（废弃）"></a>进行相关配置（废弃）</h4><p>编辑文件/etc/default/coturn和/etc/turnserver.conf，这两个文件没找到。<br>配置这些文件后，可以使用service coturn start进行启动。我们启动时，使用turnserver命令启动，后面自带参数，就不用配置了。</p>
+<h4 id="启动coturn服务器"><a href="#启动coturn服务器" class="headerlink" title="启动coturn服务器"></a>启动coturn服务器</h4><p>配置防火墙，允许访问3478端口（含tcp和udp，此端口用于nat穿透）<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 账号:zhangkx 密码：123456，在apprtc中有配置</span></span><br><span class="line">sudo turnserver -L 0.0.0.0 -a -u zhangkx:123456 -v -f -r nort.gov</span><br><span class="line"><span class="comment"># 若想后台运行，则执行</span></span><br><span class="line">sudo nohup turnserver -L 0.0.0.0 -a -u zhangkx:123456 -v -f -r nort.gov &amp;</span><br><span class="line"></span><br><span class="line"><span class="comment"># x外网ip,L和E是内网ip</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 开启控制台新窗口，查询是否成功</span></span><br><span class="line">sudo lsof -i:3478</span><br><span class="line">COMMAND    PID  USER  FD  TYPE  DEVICE  SIZE/OFF  NODE  NAME</span><br><span class="line">turnserver 5822 root  40u IPv4  92909     0t0     UDP   *:3478</span><br><span class="line">turnserver 5822 root  41u IPv4  92910     0t0     UDP   *:3478</span><br><span class="line">turnserver 5822 root  42u IPv4  92911     0t0     UDP   *:3478</span><br><span class="line">...</span><br><span class="line">turnserver 5822 root  65u IPv4  91553     0t0     TCP   *:3478 (LiSTEN)</span><br><span class="line">turnserver 5822 root  66u IPv4  96745     0t0     TCP   *:3478 (LiSTEN)</span><br><span class="line">turnserver 5822 root  67u IPv4  97486     0t0     TCP   *:3478 (LiSTEN)</span><br><span class="line">...</span><br></pre></td></tr></table></figure></p>
+<h2 id="配置Nginx服务器"><a href="#配置Nginx服务器" class="headerlink" title="配置Nginx服务器"></a>配置Nginx服务器</h2><p>用来统一 HTTP 对外服务端口，以及最主要的反代 3033 TURN REST API服务<br>注意安装的时候要带ssl</p>
+<h4 id="安装Nginx"><a href="#安装Nginx" class="headerlink" title="安装Nginx"></a>安装Nginx</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 安装依赖：gcc、g++依赖库</span></span><br><span class="line">sudo apt-get install build-essential libtool</span><br><span class="line"><span class="comment"># 安装 pcre依赖库（http://www.pcre.org/）</span></span><br><span class="line">sudo apt-get install libpcre3 libpcre3-dev</span><br><span class="line"><span class="comment"># 安装 zlib依赖库（http://www.zlib.net）</span></span><br><span class="line">sudo apt-get install zlib1g-dev</span><br><span class="line"><span class="comment"># 安装ssl依赖库</span></span><br><span class="line">sudo apt-get install openssl</span><br><span class="line"></span><br><span class="line"><span class="comment"># 下载nginx 1.15.8版本</span></span><br><span class="line">wget http://nginx.org/download/nginx-1.15.8.tar.gz</span><br><span class="line">tar xvzf nginx-1.15.8.tar.gz</span><br><span class="line"><span class="built_in">cd</span> nginx-1.15.8/</span><br><span class="line"></span><br><span class="line"><span class="comment"># 配置，一定要支持https</span></span><br><span class="line">sudo ./configure --with-http_ssl_module </span><br><span class="line"></span><br><span class="line"><span class="comment"># 编译 安装</span></span><br><span class="line">sudo make</span><br><span class="line">sudo make install</span><br></pre></td></tr></table></figure>
+<p>默认安装目录：/usr/local/nginx<br>启动：sudo /usr/local/nginx/sbin/nginx<br>停止：sudo /usr/local/nginx/sbin/nginx -s stop<br>重新加载配置文件：sudo /usr/local/nginx/sbin/nginx -s reload</p>
+<h4 id="配置Nginx-未使用"><a href="#配置Nginx-未使用" class="headerlink" title="配置Nginx (未使用)"></a>配置Nginx (未使用)</h4><p>编辑配置文件/etc/nginx/sites-available/default<br><figure class="highlight perl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">server &#123;</span><br><span class="line">        <span class="keyword">listen</span> <span class="number">80</span> default_server;</span><br><span class="line">        <span class="keyword">listen</span> [::]:<span class="number">80</span> default_server;</span><br><span class="line"></span><br><span class="line">        <span class="comment"># SSL configuration</span></span><br><span class="line">        <span class="comment">#</span></span><br><span class="line">        <span class="comment"># listen 443 ssl default_server;</span></span><br><span class="line">        <span class="comment"># listen [::]:443 ssl default_server;</span></span><br><span class="line">        <span class="comment">#</span></span><br><span class="line">        <span class="comment"># Note: You should disable gzip for SSL traffic.</span></span><br><span class="line">        <span class="comment"># See: https://bugs.debian.org/773332</span></span><br><span class="line">        <span class="comment">#</span></span><br><span class="line">        <span class="comment"># Read up on ssl_ciphers to ensure a secure configuration.</span></span><br><span class="line">        <span class="comment"># See: https://bugs.debian.org/765782</span></span><br><span class="line">        <span class="comment">#</span></span><br><span class="line">        <span class="comment"># Self signed certs generated by the ssl-cert package</span></span><br><span class="line">        <span class="comment"># Don't use them in a production server!</span></span><br><span class="line">        <span class="comment">#</span></span><br><span class="line">        <span class="comment"># include snippets/snakeoil.conf;</span></span><br><span class="line"></span><br><span class="line">        root /var/www/html;</span><br><span class="line"></span><br><span class="line">        <span class="comment"># Add index.php to the list if you are using PHP</span></span><br><span class="line">        <span class="keyword">index</span> index.html index.htm index.nginx-debian.html;</span><br><span class="line"></span><br><span class="line">        server_name <span class="number">192.168</span>.<span class="number">3.110</span>; <span class="comment">#添加地址</span></span><br><span class="line"></span><br><span class="line">        location / &#123;</span><br><span class="line">                <span class="comment"># First attempt to serve request as file, then</span></span><br><span class="line">                <span class="comment"># as directory, then fall back to displaying a 404.</span></span><br><span class="line">             try_files $uri $uri/ =<span class="number">404</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        .....</span><br><span class="line">        ....</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></p>
+<h4 id="生成SSL证书"><a href="#生成SSL证书" class="headerlink" title="生成SSL证书"></a>生成SSL证书</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">mkdir -p ~/cert</span><br><span class="line"><span class="built_in">cd</span> ~/cert</span><br><span class="line"><span class="comment"># CA私钥</span></span><br><span class="line">openssl genrsa -out key.pem 2048</span><br><span class="line"><span class="comment"># 自签名证书</span></span><br><span class="line">openssl req -new -x509 -key key.pem -out cert.pem -days 1095</span><br></pre></td></tr></table></figure>
+<h4 id="Web代理"><a href="#Web代理" class="headerlink" title="Web代理"></a>Web代理</h4><p>反向代理apprtc，使之支持https访问，如果http直接访问apprtc，则客户端无法启动视频音频采集（必须得用https访问)<br>即使用<a href="http://192.168.3.110:8090，可以打开room" target="_blank" rel="noopener">http://192.168.3.110:8090，可以打开room</a> server服务器，但是加入房间后，无法启动音视频采集。</p>
+<h4 id="配置web服务器"><a href="#配置web服务器" class="headerlink" title="配置web服务器"></a>配置web服务器</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">sudo vim /usr/<span class="built_in">local</span>/nginx/conf/conf.d/apprtc-https-proxy.conf</span><br><span class="line"></span><br><span class="line">upstream roomserver &#123;</span><br><span class="line">   server 192.168.3.110:8090;</span><br><span class="line">&#125;</span><br><span class="line">server &#123;</span><br><span class="line">    listen 443 ssl;</span><br><span class="line">    ssl_certificate /home/zhangkx/cert/cert.pem;</span><br><span class="line">    ssl_certificate_key /home/zhangkx/cert/key.pem; </span><br><span class="line">    charset utf-8;</span><br><span class="line">    <span class="comment"># ip地址或者域名</span></span><br><span class="line">    server_name 192.168.3.110;</span><br><span class="line">    location / &#123;</span><br><span class="line">        <span class="comment"># 转向代理的地址</span></span><br><span class="line">        proxy_pass http://roomserver<span class="variable">$request_uri</span>;</span><br><span class="line">        proxy_set_header Host <span class="variable">$host</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">sudo vim nginx.conf</span><br><span class="line"><span class="comment"># 在末尾&#125;之前，添加下行内容，包含文件</span></span><br><span class="line">	include /usr/<span class="built_in">local</span>/nginx/conf/conf.d/*.conf;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="配置websocket代理"><a href="#配置websocket代理" class="headerlink" title="配置websocket代理"></a>配置websocket代理</h4><p>ws 不安全的连接 类似http<br>wss是安全的连接，类似https<br>完整配置文件：/usr/local/nginx/conf/conf.d/apprtc-websocket-proxy.conf<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">map <span class="variable">$http_upgrade</span> <span class="variable">$connection_upgrade</span> &#123;</span><br><span class="line">    default upgrade;</span><br><span class="line">    <span class="string">''</span> close;</span><br><span class="line">&#125;</span><br><span class="line">upstream websocket &#123;</span><br><span class="line">    server 192.168.3.110:8089;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">server &#123;</span><br><span class="line">    listen 8088 ssl;</span><br><span class="line">    ssl_certificate /home/zhangkx/cert/cert.pem;</span><br><span class="line">    ssl_certificate_key /home/zhangkx/cert/key.pem;</span><br><span class="line"></span><br><span class="line">    server_name 192.168.3.110;</span><br><span class="line">    location /ws &#123;</span><br><span class="line">        proxy_pass http://websocket;</span><br><span class="line">        proxy_http_version 1.1;</span><br><span class="line">        proxy_connect_timeout 4s; <span class="comment">#配置点1</span></span><br><span class="line">        proxy_read_timeout 6000s; <span class="comment">#配置点2，如果没效，可以考虑这个时间配置长一点</span></span><br><span class="line">        proxy_send_timeout 6000s; <span class="comment">#配置点3</span></span><br><span class="line">        proxy_set_header Upgrade <span class="variable">$http_upgrade</span>;</span><br><span class="line">        proxy_set_header Connection <span class="variable">$connection_upgrade</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>—– 以下未使用 —–</p>
+<h4 id="安装php和php-fpm"><a href="#安装php和php-fpm" class="headerlink" title="安装php和php-fpm"></a>安装php和php-fpm</h4><p>ubuntu 16上，php是7.0的<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">apt-get install php  </span><br><span class="line">apt-get install php7.0-fpm</span><br></pre></td></tr></table></figure></p>
+<h4 id="编辑配置文件-etc-nginx-sites-available-default"><a href="#编辑配置文件-etc-nginx-sites-available-default" class="headerlink" title="编辑配置文件/etc/nginx/sites-available/default"></a>编辑配置文件/etc/nginx/sites-available/default</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br></pre></td><td class="code"><pre><span class="line">upstream roomserver &#123;</span><br><span class="line">                server 192.168.3.110:8090;</span><br><span class="line">        &#125;</span><br><span class="line">        server &#123;</span><br><span class="line">                listen 80 ;</span><br><span class="line">                server_name webrtc.olcms.com;</span><br><span class="line">                <span class="built_in">return</span>  301 https://<span class="variable">$server_name</span><span class="variable">$request_uri</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        server &#123;</span><br><span class="line">                <span class="comment"># listen 80 default_server;</span></span><br><span class="line">                <span class="comment"># listen [::]:80 default_server;</span></span><br><span class="line"></span><br><span class="line">                <span class="comment"># SSL configuration</span></span><br><span class="line">                <span class="comment">#</span></span><br><span class="line">                <span class="comment"># listen 443 ssl default_server;</span></span><br><span class="line">                <span class="comment"># listen [::]:443 ssl default_server;</span></span><br><span class="line">                listen 443;</span><br><span class="line">                <span class="comment">#</span></span><br><span class="line">                <span class="comment"># Note: You should disable gzip for SSL traffic.</span></span><br><span class="line">                <span class="comment"># See: https://bugs.debian.org/773332</span></span><br><span class="line">                <span class="comment">#</span></span><br><span class="line">                <span class="comment"># Read up on ssl_ciphers to ensure a secure configuration.</span></span><br><span class="line">                <span class="comment"># See: https://bugs.debian.org/765782</span></span><br><span class="line">                <span class="comment">#</span></span><br><span class="line">                <span class="comment"># Self signed certs generated by the ssl-cert package</span></span><br><span class="line">                <span class="comment"># Don't use them in a production server!</span></span><br><span class="line">                <span class="comment">#</span></span><br><span class="line">                <span class="comment"># include snippets/snakeoil.conf;</span></span><br><span class="line"></span><br><span class="line">                root /var/www/html;</span><br><span class="line"></span><br><span class="line">                <span class="comment"># Add index.php to the list if you are using PHP</span></span><br><span class="line">                index index.html index.htm index.nginx-debian.html index.php; <span class="comment">#此处添加index.php</span></span><br><span class="line"></span><br><span class="line">                server_name webrtc.olcms.com;</span><br><span class="line"></span><br><span class="line">                <span class="comment"># location / &#123;</span></span><br><span class="line">                        <span class="comment"># First attempt to serve request as file, then</span></span><br><span class="line">                        <span class="comment"># as directory, then fall back to displaying a 404.</span></span><br><span class="line">                        <span class="comment"># try_files $uri $uri/ =404;</span></span><br><span class="line">                <span class="comment"># &#125;</span></span><br><span class="line"></span><br><span class="line">               <span class="comment"># pass the PHP scripts to FastCGI server listening on 127.0.0.1:9000</span></span><br><span class="line">                <span class="comment">#</span></span><br><span class="line">                location ~ \.php$ &#123;</span><br><span class="line">                        include snippets/fastcgi-php.conf;</span><br><span class="line">                        <span class="comment"># With php7.0-cgi alone:</span></span><br><span class="line">                        <span class="comment">#fastcgi_pass 127.0.0.1:9000;</span></span><br><span class="line">                        <span class="comment"># With php7.0-fpm:</span></span><br><span class="line">                        fastcgi_pass unix:/run/php/php7.0-fpm.sock;</span><br><span class="line">                &#125;</span><br><span class="line">                location / &#123;</span><br><span class="line">                       proxy_pass http://roomserver<span class="variable">$request_uri</span>;</span><br><span class="line">                       proxy_set_header Host <span class="variable">$host</span>;</span><br><span class="line">                &#125;</span><br><span class="line"></span><br><span class="line">                <span class="comment"># deny access to .htaccess files, if Apache's document root</span></span><br><span class="line">                <span class="comment"># concurs with nginx's one</span></span><br><span class="line">                <span class="comment">#</span></span><br><span class="line">                <span class="comment">#location ~ /\.ht &#123;</span></span><br><span class="line">                <span class="comment">#       deny all;</span></span><br><span class="line">                <span class="comment">#&#125;</span></span><br><span class="line">                ssl on;</span><br><span class="line">                ssl_certificate /etc/letsencrypt/live/webrtc.olcms.com/fullchain.pem;</span><br><span class="line">                ssl_certificate_key /etc/letsencrypt/live/webrtc.olcms.com/privkey.pem;</span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure>
+<h4 id="编写turn-php文件和iceconfig-php文件，并把文件放到目录-var-www-html-目录下"><a href="#编写turn-php文件和iceconfig-php文件，并把文件放到目录-var-www-html-目录下" class="headerlink" title="编写turn.php文件和iceconfig.php文件，并把文件放到目录/var/www/html/目录下"></a>编写turn.php文件和iceconfig.php文件，并把文件放到目录/var/www/html/目录下</h4><p>turn.php文件内容<br><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span>  </span><br><span class="line">           $request_username = $_GET[<span class="string">"username"</span>];  </span><br><span class="line">           <span class="keyword">if</span>(<span class="keyword">empty</span>($request_username)) &#123;  </span><br><span class="line">               <span class="keyword">echo</span> <span class="string">"username == null"</span>;  </span><br><span class="line">               <span class="keyword">exit</span>;  </span><br><span class="line">           &#125;  </span><br><span class="line">           $request_key = $_GET[<span class="string">"key"</span>];  </span><br><span class="line">           $time_to_live = <span class="number">600</span>;  </span><br><span class="line">           $timestamp = time() + $time_to_live;<span class="comment">//失效时间  </span></span><br><span class="line">           $response_username = $timestamp.<span class="string">":"</span>.$_GET[<span class="string">"username"</span>];  </span><br><span class="line">           $response_key = $request_key;  </span><br><span class="line">           <span class="keyword">if</span>(<span class="keyword">empty</span>($response_key))  </span><br><span class="line">           $response_key = <span class="string">"code_key"</span>; <span class="comment">//constants.py中CEOD_KEY  </span></span><br><span class="line"></span><br><span class="line">           $response_password = getSignature($response_username, $response_key);  </span><br><span class="line"></span><br><span class="line">           $jsonObj = <span class="keyword">new</span> Response();  </span><br><span class="line">           $jsonObj-&gt;username = $response_username;  </span><br><span class="line">           $jsonObj-&gt;password = $response_password;  </span><br><span class="line">           $jsonObj-&gt;ttl = <span class="number">86400</span>;</span><br><span class="line">           <span class="comment">//此处需配置自己的服务器</span></span><br><span class="line">           $jsonObj-&gt;uris= <span class="keyword">array</span>(<span class="string">"stun:webrtc.olcms.com:3478"</span>,<span class="string">"turn:webrtc.olcms.com:3478?transport=udp"</span>,<span class="string">"turn:webrtc.olcms.com?transport=tcp"</span>);</span><br><span class="line"></span><br><span class="line">           <span class="keyword">echo</span> json_encode($jsonObj);  </span><br><span class="line"></span><br><span class="line">       <span class="comment">/**   </span></span><br><span class="line"><span class="comment">        * 使用HMAC-SHA1算法生成签名值   </span></span><br><span class="line"><span class="comment">        *   </span></span><br><span class="line"><span class="comment">        * <span class="doctag">@param</span> $str 源串   </span></span><br><span class="line"><span class="comment">        * <span class="doctag">@param</span> $key 密钥   </span></span><br><span class="line"><span class="comment">        *   </span></span><br><span class="line"><span class="comment">        * <span class="doctag">@return</span> 签名值   </span></span><br><span class="line"><span class="comment">        */</span></span><br><span class="line">       <span class="function"><span class="keyword">function</span> <span class="title">getSignature</span><span class="params">($str, $key)</span> </span>&#123;</span><br><span class="line">       $signature = <span class="string">""</span>;</span><br><span class="line">       <span class="keyword">if</span> (function_exists(<span class="string">'hash_hmac'</span>)) &#123;</span><br><span class="line">       $signature = base64_encode(hash_hmac(<span class="string">"sha1"</span>, $str, $key, <span class="keyword">true</span>));</span><br><span class="line">       &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">       $blocksize = <span class="number">64</span>;</span><br><span class="line">       $hashfunc = <span class="string">'sha1'</span>;</span><br><span class="line">       <span class="keyword">if</span> (strlen($key) &gt; $blocksize) &#123;</span><br><span class="line">       $key = pack(<span class="string">'H*'</span>, $hashfunc($key));</span><br><span class="line">       &#125;</span><br><span class="line">       $key = str_pad($key, $blocksize, chr(<span class="number">0x00</span>));</span><br><span class="line">       $ipad = str_repeat(chr(<span class="number">0x36</span>), $blocksize);</span><br><span class="line">       $opad = str_repeat(chr(<span class="number">0x5c</span>), $blocksize);</span><br><span class="line">       $hmac = pack(</span><br><span class="line">       <span class="string">'H*'</span>, $hashfunc(</span><br><span class="line">       ($key ^ $opad) . pack(</span><br><span class="line">       <span class="string">'H*'</span>, $hashfunc(</span><br><span class="line">       ($key ^ $ipad) . $str</span><br><span class="line">       )</span><br><span class="line">       )</span><br><span class="line">       )</span><br><span class="line">       );</span><br><span class="line">       $signature = base64_encode($hmac);</span><br><span class="line">       &#125;</span><br><span class="line">           <span class="keyword">return</span> $signature;</span><br><span class="line">           &#125;</span><br><span class="line"></span><br><span class="line">           <span class="class"><span class="keyword">class</span> <span class="title">Response</span> </span>&#123;  </span><br><span class="line">               <span class="keyword">public</span> $username = <span class="string">""</span>;  </span><br><span class="line">               <span class="keyword">public</span> $password = <span class="string">""</span>;  </span><br><span class="line">               <span class="keyword">public</span> $ttl = <span class="string">""</span>;  </span><br><span class="line">               <span class="keyword">public</span> $uris = <span class="keyword">array</span>(<span class="string">""</span>);  </span><br><span class="line">           &#125;  </span><br><span class="line"></span><br><span class="line">       <span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure></p>
+<p>iceconfig.php文件内容<br><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span>  </span><br><span class="line">            $request_username = <span class="string">"inesadt"</span>;  <span class="comment">//配置成自己的turn服务器用户名</span></span><br><span class="line">            <span class="keyword">if</span>(<span class="keyword">empty</span>($request_username)) &#123;  </span><br><span class="line">                <span class="keyword">echo</span> <span class="string">"username == null"</span>;  </span><br><span class="line">                <span class="keyword">exit</span>;  </span><br><span class="line">            &#125;  </span><br><span class="line">            $request_key = <span class="string">"inesadt"</span>;  <span class="comment">//配置成自己的turn服务器密码</span></span><br><span class="line">            $time_to_live = <span class="number">600</span>;  </span><br><span class="line">            $timestamp = time() + $time_to_live;<span class="comment">//失效时间  </span></span><br><span class="line">            $response_username = $timestamp.<span class="string">":"</span>.$_GET[<span class="string">"username"</span>];  </span><br><span class="line">            $response_key = $request_key;  </span><br><span class="line">            <span class="keyword">if</span>(<span class="keyword">empty</span>($response_key))  </span><br><span class="line">            $response_key = <span class="string">"CEOD_KEY"</span>;<span class="comment">//constants.py中CEOD_KEY  </span></span><br><span class="line"></span><br><span class="line">            $response_password = getSignature($response_username, $response_key);  </span><br><span class="line"></span><br><span class="line">            $arrayObj = <span class="keyword">array</span>();</span><br><span class="line">            $arrayObj[<span class="number">0</span>][<span class="string">'username'</span>] = $response_username;</span><br><span class="line">            $arrayObj[<span class="number">0</span>][<span class="string">'credential'</span>] = $response_password;</span><br><span class="line">            <span class="comment">//配置成自己的stun/turn服务器</span></span><br><span class="line">            $arrayObj[<span class="number">0</span>][<span class="string">'urls'</span>][<span class="number">0</span>] = <span class="string">"stun:webrtc.olcms.com:3478"</span>;</span><br><span class="line">            $arrayObj[<span class="number">0</span>][<span class="string">'urls'</span>][<span class="number">1</span>] = <span class="string">"turn:webrtc.olcms.com:3478?transport=tcp"</span>;</span><br><span class="line">            $arrayObj[<span class="number">0</span>][<span class="string">'uris'</span>][<span class="number">0</span>] = <span class="string">"stun:webrtc.olcms.com:3478"</span>;</span><br><span class="line">            $arrayObj[<span class="number">0</span>][<span class="string">'uris'</span>][<span class="number">1</span>] = <span class="string">"turn:webrtc.olcms.com:3478?transport=tcp"</span>;</span><br><span class="line">            $jsonObj = <span class="keyword">new</span> Response();  </span><br><span class="line">            $jsonObj-&gt;lifetimeDuration = <span class="string">"300.000s"</span>;</span><br><span class="line">            $jsonObj-&gt;iceServers = $arrayObj;</span><br><span class="line">            <span class="keyword">echo</span> json_encode($jsonObj);  </span><br><span class="line"></span><br><span class="line">            <span class="comment">/**   </span></span><br><span class="line"><span class="comment">            * 使用HMAC-SHA1算法生成签名值   </span></span><br><span class="line"><span class="comment">            *   </span></span><br><span class="line"><span class="comment">            * <span class="doctag">@param</span> $str 源串   </span></span><br><span class="line"><span class="comment">            * <span class="doctag">@param</span> $key 密钥   </span></span><br><span class="line"><span class="comment">            *   </span></span><br><span class="line"><span class="comment">            * <span class="doctag">@return</span> 签名值   </span></span><br><span class="line"><span class="comment">            */</span></span><br><span class="line">            <span class="function"><span class="keyword">function</span> <span class="title">getSignature</span><span class="params">($str, $key)</span> </span>&#123;</span><br><span class="line">                $signature = <span class="string">""</span>;</span><br><span class="line">                <span class="keyword">if</span> (function_exists(<span class="string">'hash_hmac'</span>)) &#123;</span><br><span class="line">                    $signature = base64_encode(hash_hmac(<span class="string">"sha1"</span>, $str, $key, <span class="keyword">true</span>));</span><br><span class="line">                &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                    $blocksize = <span class="number">64</span>;</span><br><span class="line">                    hashfunc = <span class="string">'sha1'</span>;</span><br><span class="line">                    <span class="keyword">if</span> (strlen($key) &gt; $blocksize) &#123;</span><br><span class="line">                        $key = pack(<span class="string">'H*'</span>, $hashfunc($key));</span><br><span class="line">                    &#125;</span><br><span class="line">                    $key = str_pad($key, $blocksize, chr(<span class="number">0x00</span>));</span><br><span class="line">                    $ipad = str_repeat(chr(<span class="number">0x36</span>), $blocksize);</span><br><span class="line">                    $opad = str_repeat(chr(<span class="number">0x5c</span>), $blocksize);</span><br><span class="line">                    $hmac = pack(    </span><br><span class="line">                    <span class="string">'H*'</span>, $hashfunc(    </span><br><span class="line">                            ($key ^ $opad) . pack(    </span><br><span class="line">                                    <span class="string">'H*'</span>, $hashfunc(    </span><br><span class="line">                                            ($key ^ $ipad) . $str    </span><br><span class="line">                                   )    </span><br><span class="line">                            )    </span><br><span class="line">                        )    </span><br><span class="line">                    ); </span><br><span class="line">                    $signature = base64_encode($hmac);</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">return</span> $signature;</span><br><span class="line">           &#125;</span><br><span class="line"></span><br><span class="line">            <span class="class"><span class="keyword">class</span> <span class="title">Response</span> </span>&#123;</span><br><span class="line">                    <span class="keyword">public</span> $lifetimeDuration = <span class="string">""</span>;</span><br><span class="line">                    <span class="keyword">public</span> $iceServers = <span class="keyword">array</span>(<span class="string">""</span>);</span><br><span class="line">            &#125; </span><br><span class="line">        <span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure></p>
+<h4 id="重启Nginx服务器和php7-0-fpm-（未使用）"><a href="#重启Nginx服务器和php7-0-fpm-（未使用）" class="headerlink" title="重启Nginx服务器和php7.0-fpm （未使用）"></a>重启Nginx服务器和php7.0-fpm （未使用）</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">service nginx restart </span><br><span class="line">service php7.0-fpm restart</span><br></pre></td></tr></table></figure>
+<h2 id="遇到问题"><a href="#遇到问题" class="headerlink" title="遇到问题"></a>遇到问题</h2><ol>
+<li><p>可以使用curl命令测试该服务器，看返回是否正常。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ curl -X POST <span class="string">"http://apprtc.wanttosee.com:3033/v1alpha/iceconfig?key=4080218913"</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>执行nginx时，报错</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">"/usr/local/nginx/logs/nginx.pid"</span> failed (2: No such file or directory)</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>解决<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/usr/<span class="built_in">local</span>/nginx/sbin/nginx -c /usr/<span class="built_in">local</span>/nginx/conf/nginx.conf</span><br></pre></td></tr></table></figure></p>
+<ol start="3">
+<li>错误<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Failed to start signaling: Failed to execute ‘pushState’ on ‘History’: A <span class="built_in">history</span> state object with URL ‘http://192.168.6.54/r/198676628’ cannot be created <span class="keyword">in</span> a document with origin ‘https://192.168.6.54’ and URL ‘https://192.168.6.54/</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>解决方法1：<br>房间服务器编译完成后，在/root/apprtc/out/app_engine/js/apprtc.debug.js文件中找到<br><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">window.history.pushState(&#123;‘roomId’: roomId, ‘roomLink’: roomLink&#125;, roomId, roomLink)</span><br></pre></td></tr></table></figure></p>
+<p>，把这句话注释掉，重新运行即可。（如果重新编译，需要重新修改）<br>解决方法2：<br>在/root/apprtc/src/web_app/js/appcontroller.js文件中找到<br><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">window.history.pushState(&#123;‘roomId’: roomId, ‘roomLink’: roomLink&#125;, roomId, roomLink)</span><br></pre></td></tr></table></figure></p>
+<p>，把这句话注释掉，然后重新编译，重新运行房间服务器即可。</p>
+<p>https带域名<br><a href="https://www.cnblogs.com/qcjd/p/9324877.html" target="_blank" rel="noopener">https://www.cnblogs.com/qcjd/p/9324877.html</a></p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+      <div>
+        <ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>kunxiang.zhang</li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://www.20864.com/webrtc-server.html" title="WebRTC 服务器搭建">http://www.20864.com/webrtc-server.html</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明出处！</li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/webrtc/" rel="tag"># webrtc</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/webrtc-build.html" rel="next" title="WebRTC国内镜像下载及编译">
+                <i class="fa fa-chevron-left"></i> WebRTC国内镜像下载及编译
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="SOHUCS"></div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+      <div id="sidebar-dimmer"></div>
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+            <a href="/">
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.png"
+                alt="kunxiang.zhang" />
+            </a>
+            
+              <p class="site-author-name" itemprop="name">kunxiang.zhang</p>
+              <p class="site-description motion-element" itemprop="description">要么旅行,要么读书,身体和灵魂必须有一个在路上。</p>
+          </div>
+	  
+	  <div>
+	      <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=86 src="//music.163.com/outchain/player?type=2&id=28285910&auto=1&height=66"></iframe>
+	  </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">3</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/categories/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">2</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">2</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+            <div class="feed-link motion-element">
+              <a href="/rss2.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+
+          
+          
+            <div class="cc-license motion-element" itemprop="license">
+              <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" target="_blank">
+                <img src="/images/cc-by-nc-sa.svg" alt="Creative Commons" />
+              </a>
+            </div>
+          
+
+          
+          
+
+          
+            
+          
+          <div id="days"></div>
+<script>
+function show_date_time(){
+window.setTimeout("show_date_time()", 1000);
+BirthDay=new Date("01/20/2019 00:00:00");
+today=new Date();
+timeold=(today.getTime()-BirthDay.getTime());
+sectimeold=timeold/1000
+secondsold=Math.floor(sectimeold);
+msPerDay=24*60*60*1000
+e_daysold=timeold/msPerDay
+daysold=Math.floor(e_daysold);
+e_hrsold=(e_daysold-daysold)*24;
+hrsold=setzero(Math.floor(e_hrsold));
+e_minsold=(e_hrsold-hrsold)*60;
+minsold=setzero(Math.floor((e_hrsold-hrsold)*60));
+seconds=setzero(Math.floor((e_minsold-minsold)*60));
+document.getElementById('days').innerHTML="已运行 "+daysold+" 天 "+hrsold+" 小时 "+minsold+" 分 "+seconds+" 秒";
+}
+function setzero(i){
+if (i<10)
+{i="0" + i};
+return i;
+}
+show_date_time();
+</script>
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#环境"><span class="nav-number">1.</span> <span class="nav-text">环境</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#服务器组成"><span class="nav-number">2.</span> <span class="nav-text">服务器组成</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#软件安装"><span class="nav-number">3.</span> <span class="nav-text">软件安装</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#基础软件"><span class="nav-number">3.0.1.</span> <span class="nav-text">基础软件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#创建目录"><span class="nav-number">3.0.2.</span> <span class="nav-text">创建目录</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#安装nodejs及相关"><span class="nav-number">3.0.3.</span> <span class="nav-text">安装nodejs及相关</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#安装Python和Python-webtest"><span class="nav-number">3.0.4.</span> <span class="nav-text">安装Python和Python-webtest</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#搭建房间服务器（Room-Server）"><span class="nav-number">4.</span> <span class="nav-text">搭建房间服务器（Room Server）</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#下载apprtc源码"><span class="nav-number">4.0.1.</span> <span class="nav-text">下载apprtc源码</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#修改文件"><span class="nav-number">4.0.2.</span> <span class="nav-text">修改文件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#编译"><span class="nav-number">4.0.3.</span> <span class="nav-text">编译</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#安装和配置google-app-engine"><span class="nav-number">4.0.4.</span> <span class="nav-text">安装和配置google app engine</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#运行房间服务器（room-server"><span class="nav-number">4.0.5.</span> <span class="nav-text">运行房间服务器（room server)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#在浏览器中访问房间服务器"><span class="nav-number">4.0.6.</span> <span class="nav-text">在浏览器中访问房间服务器</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#搭建信令服务器-Collider-Server"><span class="nav-number">5.</span> <span class="nav-text">搭建信令服务器(Collider Server)</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#安装go语言编译器"><span class="nav-number">5.0.1.</span> <span class="nav-text">安装go语言编译器</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#复制collider源代码"><span class="nav-number">5.0.2.</span> <span class="nav-text">复制collider源代码</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#修改代码"><span class="nav-number">5.0.3.</span> <span class="nav-text">修改代码</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#编译信令服务器"><span class="nav-number">5.0.4.</span> <span class="nav-text">编译信令服务器</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#运行信令服务器"><span class="nav-number">5.0.5.</span> <span class="nav-text">运行信令服务器</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#搭建STUN-TURN服务器"><span class="nav-number">6.</span> <span class="nav-text">搭建STUN\TURN服务器</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#安装coturn"><span class="nav-number">6.0.1.</span> <span class="nav-text">安装coturn</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#进行相关配置（废弃）"><span class="nav-number">6.0.2.</span> <span class="nav-text">进行相关配置（废弃）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#启动coturn服务器"><span class="nav-number">6.0.3.</span> <span class="nav-text">启动coturn服务器</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#配置Nginx服务器"><span class="nav-number">7.</span> <span class="nav-text">配置Nginx服务器</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#安装Nginx"><span class="nav-number">7.0.1.</span> <span class="nav-text">安装Nginx</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#配置Nginx-未使用"><span class="nav-number">7.0.2.</span> <span class="nav-text">配置Nginx (未使用)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#生成SSL证书"><span class="nav-number">7.0.3.</span> <span class="nav-text">生成SSL证书</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Web代理"><span class="nav-number">7.0.4.</span> <span class="nav-text">Web代理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#配置web服务器"><span class="nav-number">7.0.5.</span> <span class="nav-text">配置web服务器</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#配置websocket代理"><span class="nav-number">7.0.6.</span> <span class="nav-text">配置websocket代理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#安装php和php-fpm"><span class="nav-number">7.0.7.</span> <span class="nav-text">安装php和php-fpm</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#编辑配置文件-etc-nginx-sites-available-default"><span class="nav-number">7.0.8.</span> <span class="nav-text">编辑配置文件/etc/nginx/sites-available/default</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#编写turn-php文件和iceconfig-php文件，并把文件放到目录-var-www-html-目录下"><span class="nav-number">7.0.9.</span> <span class="nav-text">编写turn.php文件和iceconfig.php文件，并把文件放到目录/var/www/html/目录下</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#重启Nginx服务器和php7-0-fpm-（未使用）"><span class="nav-number">7.0.10.</span> <span class="nav-text">重启Nginx服务器和php7.0-fpm （未使用）</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#遇到问题"><span class="nav-number">8.</span> <span class="nav-text">遇到问题</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<div class="copyright">&copy; 2018 – <span itemprop="copyrightYear">2020</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-snowflake-o"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">kunxiang.zhang</span>
+
+  
+
+  
+</div>
+
+
+
+<div class="powered-by">
+  <span id="busuanzi_container_site_pv">
+    本站总访问量<span id="busuanzi_value_site_pv"></span>次
+  </span>
+</div>
+
+<span class="post-meta-divider">|</span>
+
+
+
+
+
+
+  <div class="theme-info">
+  	<a class="theme-link" target="_blank" href="http://www.miibeian.gov.cn">
+		沪ICP备18031370号-1
+	</a>
+  </div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+	
+    
+
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="//cdn.jsdelivr.net/jquery/2.1.3/jquery.min.js"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="//cdn.jsdelivr.net/velocity/1.2.3/velocity.min.js"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="//cdn.jsdelivr.net/velocity/1.2.3/velocity.ui.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=6.4.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=6.4.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.4.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=6.4.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=6.4.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+  
+    <script type="text/javascript">
+    (function(){
+      var appid = 'cytLJD3lp';
+      var conf = '7b586c40363790128b88421a9023c75b';
+      var width = window.innerWidth || document.documentElement.clientWidth;
+      if (width < 960) {
+      window.document.write('<script id="changyan_mobile_js" charset="utf-8" type="text/javascript" src="https://changyan.sohu.com/upload/mobile/wap-js/changyan_mobile.js?client_id=' + appid + '&conf=' + conf + '"><\/script>'); } else { var loadJs=function(d,a){var c=document.getElementsByTagName("head")[0]||document.head||document.documentElement;var b=document.createElement("script");b.setAttribute("type","text/javascript");b.setAttribute("charset","UTF-8");b.setAttribute("src",d);if(typeof a==="function"){if(window.attachEvent){b.onreadystatechange=function(){var e=b.readyState;if(e==="loaded"||e==="complete"){b.onreadystatechange=null;a()}}}else{b.onload=a}}c.appendChild(b)};loadJs("https://changyan.sohu.com/upload/changyan.js",function(){
+        window.changyan.api.config({appid:appid,conf:conf})});
+      }
+    })();
+    </script>
+    <script type="text/javascript" src="https://assets.changyan.sohu.com/upload/plugins/plugins.count.js"></script>
+  
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+  <script>
+    
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+
+      Counter('get', '/classes/Counter', { where: JSON.stringify({ url }) })
+        .done(function ({ results }) {
+          if (results.length > 0) {
+            var counter = results[0];
+            
+            Counter('put', `/classes/Counter/${counter.objectId}`, JSON.stringify({ time: { "__op":"Increment", "amount":1 } }))
+            
+            .done(function () {
+                  var $element = $(document.getElementById(url));
+                  $element.find('.leancloud-visitors-count').text(counter.time + 1);
+            })
+            
+            .fail(function ({ responseJSON }) {
+                console.log('Failed to save Visitor num, with error message: ' + responseJSON.error);
+            })
+          } else {
+            
+              Counter('post', '/classes/Counter', JSON.stringify({ title: title, url: url, time: 1}))
+                .done(function () {
+                  var $element = $(document.getElementById(url));
+                  $element.find('.leancloud-visitors-count').text(1);
+                })
+                .fail(function () {
+                  console.log('Failed to create');
+                });
+            
+          }
+        })
+      .fail(function ({ responseJSON }) {
+        console.log('LeanCloud Counter Error:' + responseJSON.code + " " + responseJSON.error);
+      });
+    }
+    
+
+    $(function() {
+      $.get('https://app-router.leancloud.cn/2/route?appId=' + "7O8FbhiNTepReN3pVRMqmPfd-gzGzoHsz")
+        .done(function ({ api_server }) {
+          var Counter = function (method, url, data) {
+            return $.ajax({
+              method: method,
+              url: `https://${api_server}/1.1${url}`,
+              headers: {
+                'X-LC-Id': "7O8FbhiNTepReN3pVRMqmPfd-gzGzoHsz",
+                'X-LC-Key': "8A2daMempkNNw9cx0n7IBs0O",
+                'Content-Type': 'application/json',
+              },
+              data: data,
+            });
+          };
+          
+          addCount(Counter);
+          
+        })
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
+
+<!-- 页面点击小红心 -->
+<script type="text/javascript" src="/js/src/love.js"></script>
